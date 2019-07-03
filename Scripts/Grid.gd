@@ -88,6 +88,7 @@ func TouchInput():
 		if IsInGrid( PixelToGrid(get_global_mouse_position().x, get_global_mouse_position().y ) ):
 			controlling = true
 			firstTouch = PixelToGrid( get_global_mouse_position().x, get_global_mouse_position().y )
+			print(firstTouch)
 			
 	if Input.is_action_just_released("ui_touch"):
 		if IsInGrid( PixelToGrid(get_global_mouse_position().x, get_global_mouse_position().y ) ) && controlling:
@@ -103,13 +104,14 @@ func TouchInput():
 func SwapPieces(col, row, direction):
 	var firstPiece = allPiece[col][row]
 	var otherPiece = allPiece[col+direction.x][row+direction.y]
-	#交換位置
-	allPiece[col][row] = otherPiece
-	allPiece[col + direction.x][row + direction.y] = firstPiece
-	#交換圖片
-	firstPiece.move( GridToPixel(col + direction.x,row + direction.y) )
-	otherPiece.move( GridToPixel(col, row) )
-	FindMatch()
+	if firstPiece != null && otherPiece != null:
+		#交換位置
+		allPiece[col][row] = otherPiece
+		allPiece[col + direction.x][row + direction.y] = firstPiece
+		#交換圖片
+		firstPiece.move( GridToPixel(col + direction.x,row + direction.y) )
+		otherPiece.move( GridToPixel(col, row) )
+		FindMatch()
 	pass
 #交換棋子END
 
@@ -169,25 +171,72 @@ func FindMatch():
 							allPiece[i][j].dim()
 							allPiece[i][j+1].matched = true
 							allPiece[i][j+1].dim()
+	get_parent().get_node("destoryTImer").start()
 #移動棋子後 偵測有沒有配對成功的END
+
+#逐個確認棋子是否符合消失的條件START
+func DestoryMatched():
+	for i in width:
+		for j in height:
+			if allPiece[i][j] != null:
+				if allPiece[i][j].matched:
+					allPiece[i][j].queue_free()
+					allPiece[i][j] = null
+	get_parent().get_node("collapseTimer").start()
+#逐個確認棋子是否符合消失的條件END
+
+#把棋子消失 START
+func _on_destoryTImer_timeout():
+	DestoryMatched()
+	pass # Replace with function body.
+#把棋子消失 END
+
+#確認棋子是否符合落下的條件START
+func CollapseColumn():
+	for i in width:
+		for j in height:
+			if allPiece[i][j] == null:
+				for k in range(j+1, height):
+					if allPiece[i][k] != null:
+						allPiece[i][k].move(GridToPixel(i, j))
+						allPiece[i][j] = allPiece[i][k]
+						allPiece[i][k] = null
+						break 
+	get_parent().get_node("refillTimer").start()
+	pass 
+#確認棋子是否符合落下的條件END
+
+#讓上面的棋子掉下來START
+func _on_collapseTimer_timeout():
+	CollapseColumn()
+#讓上面的棋子掉下來END
+
+func RefillCol():
+	for i in width:
+		for j in height:
+			if allPiece[i][j] == null:
+				#隨機數字 存著
+				var randrum = floor(rand_range(0, possiblePieces.size()))
+				var loops = 0
+				var piece = possiblePieces[randrum].instance()
+				while(MatchAt(i, j, piece.pieceColor) && loops < 100):
+					randrum = floor(rand_range(0, possiblePieces.size()))
+					loops += 1
+					piece = possiblePieces[randrum].instance()
+				#隨機放一個顏色
+				
+				#把棋子弄成棋盤的child
+				add_child(piece)
+				piece.position = GridToPixel(i,j)
+				allPiece[i][j] = piece
+	pass
+
+func _on_refillTimer_timeout():
+	RefillCol()
 
 #GML的step
 func _process(delta):
 	TouchInput()
 	pass
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+

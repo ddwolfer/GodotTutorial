@@ -30,3 +30,14 @@ height = 10
 xStart = 64
 yStart = 800
 offset = 64
+
+[node name="destoryTImer" type="Timer" parent="."]
+wait_time = 0.3
+
+[node name="collapseTimer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="refillTimer" type="Timer" parent="."]
+[connection signal="timeout" from="destoryTImer" to="Grid" method="_on_destoryTImer_timeout"]
+[connection signal="timeout" from="collapseTimer" to="Grid" method="_on_collapseTimer_timeout"]
+[connection signal="timeout" from="refillTimer" to="Grid" method="_on_refillTimer_timeout"]
