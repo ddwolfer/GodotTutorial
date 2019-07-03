@@ -33,11 +33,15 @@ offset = 64
 
 [node name="destoryTImer" type="Timer" parent="."]
 wait_time = 0.3
+one_shot = true
 
 [node name="collapseTimer" type="Timer" parent="."]
 wait_time = 0.1
+one_shot = true
 
 [node name="refillTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
 [connection signal="timeout" from="destoryTImer" to="Grid" method="_on_destoryTImer_timeout"]
 [connection signal="timeout" from="collapseTimer" to="Grid" method="_on_collapseTimer_timeout"]
 [connection signal="timeout" from="refillTimer" to="Grid" method="_on_refillTimer_timeout"]

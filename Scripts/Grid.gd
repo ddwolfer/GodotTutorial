@@ -185,12 +185,6 @@ func DestoryMatched():
 	get_parent().get_node("collapseTimer").start()
 #逐個確認棋子是否符合消失的條件END
 
-#把棋子消失 START
-func _on_destoryTImer_timeout():
-	DestoryMatched()
-	pass # Replace with function body.
-#把棋子消失 END
-
 #確認棋子是否符合落下的條件START
 func CollapseColumn():
 	for i in width:
@@ -203,13 +197,7 @@ func CollapseColumn():
 						allPiece[i][k] = null
 						break 
 	get_parent().get_node("refillTimer").start()
-	pass 
 #確認棋子是否符合落下的條件END
-
-#讓上面的棋子掉下來START
-func _on_collapseTimer_timeout():
-	CollapseColumn()
-#讓上面的棋子掉下來END
 
 func RefillCol():
 	for i in width:
@@ -229,14 +217,31 @@ func RefillCol():
 				add_child(piece)
 				piece.position = GridToPixel(i,j)
 				allPiece[i][j] = piece
+	
+	
+
+#把棋子消失 START
+func _on_destoryTImer_timeout():
+	DestoryMatched()
+	pass # Replace with function body.
+#把棋子消失 END
+
+#讓上面的棋子掉下來START
+func _on_collapseTimer_timeout():
+	CollapseColumn()
 	pass
+#讓上面的棋子掉下來END
 
 func _on_refillTimer_timeout():
 	RefillCol()
+	print("HI")
+	pass # Replace with function body.
+
 
 #GML的step
 func _process(delta):
 	TouchInput()
 	pass
 	
+
 
