@@ -30,6 +30,7 @@ height = 10
 xStart = 64
 yStart = 800
 offset = 64
+yOffset = 5
 
 [node name="destoryTImer" type="Timer" parent="."]
 wait_time = 0.3

@@ -7,6 +7,7 @@ export (int) var height
 export (int) var xStart
 export (int) var yStart
 export (int) var offset
+export (int) var yOffset
 #所有顏色的棋子
 var possiblePieces = [
 preload("res://Scenes/YellowPiece.tscn"),
@@ -215,7 +216,8 @@ func RefillCol():
 				
 				#把棋子弄成棋盤的child
 				add_child(piece)
-				piece.position = GridToPixel(i,j)
+				piece.position = GridToPixel(i,j - yOffset)
+				piece.move(GridToPixel(i,j))
 				allPiece[i][j] = piece
 	
 	
