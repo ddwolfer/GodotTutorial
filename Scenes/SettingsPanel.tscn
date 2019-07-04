@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scenes/BaseMenu.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/SettingsPanel.gd" type="Script" id=2]
+[ext_resource path="res://art/godot match 3 settings bar.png" type="Texture" id=3]
+[ext_resource path="res://art/Sound On Button.png" type="Texture" id=4]
+[ext_resource path="res://art/Back Button.png" type="Texture" id=5]
+
+[node name="Settings" index="0" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="MarginContainer" parent="." index="0"]
+editor/display_folded = false
+
+[node name="Logo and Button" parent="MarginContainer/CenterContainer" index="0"]
+margin_top = 40.0
+margin_bottom = 944.0
+
+[node name="Logo" parent="MarginContainer/CenterContainer/Logo and Button" index="0"]
+margin_bottom = 512.0
+texture = ExtResource( 3 )
+
+[node name="Button" parent="MarginContainer/CenterContainer/Logo and Button" index="1"]
+margin_top = 516.0
+margin_bottom = 904.0
+
+[node name="Button1" parent="MarginContainer/CenterContainer/Logo and Button/Button" index="0"]
+texture_normal = ExtResource( 4 )
+
+[node name="Button2" parent="MarginContainer/CenterContainer/Logo and Button/Button" index="1"]
+texture_normal = ExtResource( 5 )
+[connection signal="pressed" from="MarginContainer/CenterContainer/Logo and Button/Button/Button1" to="." method="_on_Button1_pressed"]
+[connection signal="pressed" from="MarginContainer/CenterContainer/Logo and Button/Button/Button2" to="." method="_on_Button2_pressed"]
